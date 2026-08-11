@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BluesGuitar — Learn Blues Guitar</title>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;--bg2:#111827;--bg3:#1e293b;--bg4:#334155;
+  --accent:#f59e0b;--accent2:#d97706;--accent3:#fbbf24;
+  --text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
+  --green:#10b981;--red:#ef4444;--blue:#3b82f6;--purple:#8b5cf6;
+  --radius:12px;--shadow:0 4px 24px rgba(0,0,0,.4);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent3)}
+img{max-width:100%}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,14,26,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bg3);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px;transition:box-shadow .3s}
+nav.scrolled{box-shadow:var(--shadow)}
+.nav-logo{font-size:1.4rem;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:.5rem}
+.nav-logo svg{width:28px;height:28px}
+.nav-links{display:flex;gap:.25rem;list-style:none;flex-wrap:wrap;justify-content:center}
+.nav-links a{padding:.5rem .75rem;border-radius:8px;font-size:.85rem;font-weight:600;color:var(--text2);transition:.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--accent);background:rgba(245,158,11,.1)}
+.hamburger{display:none;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem 4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(245,158,11,.12) 0%,transparent 60%);pointer-events:none}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent3),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1rem}
+.hero p{font-size:clamp(1rem,2vw,1.3rem);color:var(--text2);max-width:600px;margin-bottom:2rem}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--bg3);border:1px solid var(--bg4);padding:.5rem 1rem;border-radius:999px;font-size:.85rem;color:var(--text2);margin-bottom:2rem}
+.hero-strings{display:flex;gap:6px;margin-bottom:2rem;opacity:.6}
+.hero-strings span{width:2px;height:120px;background:linear-gradient(to bottom,var(--accent),transparent);border-radius:1px;animation:stringGlow 3s ease-in-out infinite}
+.hero-strings span:nth-child(2){animation-delay:.2s}
+.hero-strings span:nth-child(3){animation-delay:.4s}
+.hero-strings span:nth-child(4){animation-delay:.6s}
+.hero-strings span:nth-child(5){animation-delay:.8s}
+.hero-strings span:nth-child(6){animation-delay:1s}
+@keyframes stringGlow{0%,100%{opacity:.3;box-shadow:0 0 4px var(--accent)}50%{opacity:1;box-shadow:0 0 12px var(--accent)}}
+.cta-btn{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;font-weight:700;padding:.9rem 2rem;border-radius:999px;font-size:1.05rem;border:none;cursor:pointer;transition:.3s;text-decoration:none}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(245,158,11,.3)}
+
+/* ===== SECTIONS ===== */
+section{padding:5rem 2rem}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-title{text-align:center;margin-bottom:3rem}
+.section-title h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:.5rem}
+.section-title h2 span{color:var(--accent)}
+.section-title p{color:var(--text2);font-size:1.05rem;max-width:600px;margin:0 auto}
+.section-divider{width:60px;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent3));border-radius:2px;margin:1rem auto 0}
+
+/* ===== CARDS ===== */
+.card{background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);padding:2rem;transition:.3s}
+.card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow)}
+.card h3{font-size:1.2rem;font-weight:700;margin-bottom:.75rem;color:var(--accent)}
+.card p{color:var(--text2);font-size:.95rem}
+
+/* ===== GRID ===== */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem}
+
+/* ===== TAB / DIAGRAM ===== */
+.diagram-wrap{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;margin:2rem 0}
+.diagram-box{background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);padding:1.5rem;text-align:center;min-width:180px}
+.diagram-box h4{color:var(--accent);margin-bottom:.75rem;font-size:.95rem}
+.diagram-box svg{display:block;margin:0 auto}
+.diagram-box .note-label{margin-top:.5rem;font-size:.8rem;color:var(--text3)}
+
+/* ===== TAB NOTATION ===== */
+.tab{background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);padding:1.5rem;font-family:'Courier New',monospace;font-size:.9rem;line-height:1.8;overflow-x:auto;white-space:pre;margin:1rem 0;color:var(--text);position:relative}
+.tab::before{content:'TAB';position:absolute;top:.5rem;right:.75rem;font-size:.7rem;color:var(--text3);font-weight:700;letter-spacing:1px}
+.tab .highlight{color:var(--accent);font-weight:700}
+.tab .comment{color:var(--text3)}
+
+/* ===== TECH CARDS ===== */
+.tech-card{background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);padding:2rem;position:relative;overflow:hidden;transition:.3s}
+.tech-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.tech-icon{font-size:2.5rem;margin-bottom:1rem}
+.tech-card h3{font-size:1.15rem;font-weight:700;margin-bottom:.75rem}
+.tech-card p{color:var(--text2);font-size:.9rem;margin-bottom:1rem}
+.tech-card .difficulty{display:inline-block;padding:.2rem .6rem;border-radius:999px;font-size:.75rem;font-weight:700}
+.diff-easy{background:rgba(16,185,129,.15);color:var(--green)}
+.diff-med{background:rgba(245,158,11,.15);color:var(--accent)}
+.diff-hard{background:rgba(239,68,68,.15);color:var(--red)}
+
+/* ===== ACCORDION ===== */
+.accordion{margin:1rem 0}
+.accordion-item{background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);margin-bottom:.75rem;overflow:hidden;transition:.3s}
+.accordion-item:hover{border-color:var(--bg4)}
+.accordion-header{padding:1.2rem 1.5rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:1rem;user-select:none}
+.accordion-header:hover{color:var(--accent)}
+.accordion-arrow{transition:transform .3s;font-size:.8rem}
+.accordion-item.open .accordion-arrow{transform:rotate(180deg)}
+.accordion-body{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s ease}
+.accordion-item.open .accordion-body{max-height:2000px;padding:0 1.5rem 1.5rem}
+
+/* ===== PROGRESS BAR ===== */
+.progress-section{background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);padding:2rem;margin:1rem 0}
+.progress-bar{height:8px;background:var(--bg4);border-radius:4px;overflow:hidden;margin:.75rem 0}
+.progress-fill{height:100%;border-radius:4px;transition:width 1s ease}
+
+/* ===== TABLE ===== */
+.info-table{width:100%;border-collapse:collapse;margin:1rem 0}
+.info-table th,.info-table td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--bg3);font-size:.9rem}
+.info-table th{color:var(--accent);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+.info-table td{color:var(--text2)}
+.info-table tr:hover td{background:rgba(245,158,11,.03)}
+
+/* ===== FOOTER ===== */
+footer{text-align:center;padding:3rem 2rem;border-top:1px solid var(--bg3);color:var(--text3);font-size:.85rem}
+footer a{color:var(--accent)}
+
+/* ===== BADGE ===== */
+.badge{display:inline-block;padding:.25rem .6rem;border-radius:6px;font-size:.75rem;font-weight:700;margin-right:.25rem}
+.badge-blue{background:rgba(59,130,246,.15);color:var(--blue)}
+.badge-green{background:rgba(16,185,129,.15);color:var(--green)}
+.badge-amber{background:rgba(245,158,11,.15);color:var(--accent)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .nav-links{display:none;position:absolute;top:60px;left:0;right:0;background:rgba(10,14,26,.97);flex-direction:column;padding:1rem;gap:.25rem;border-bottom:1px solid var(--bg3)}
+  .nav-links.show{display:flex}
+  .hamburger{display:block}
+  section{padding:3rem 1rem}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+}
+
+/* ===== ANIMATIONS ===== */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav id="topNav">
+  <div class="nav-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    BluesGuitar
+  </div>
+  <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">☰</button>
+  <ul class="nav-links">
+    <li><a href="#scales">Scales</a></li>
+    <li><a href="#chords">Chords</a></li>
+    <li><a href="#techniques">Techniques</a></li>
+    <li><a href="#riffs">Riffs</a></li>
+    <li><a href="#fretboard">Fretboard</a></li>
+    <li><a href="#practice">Practice</a></li>
+  </ul>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero" id="hero">
+  <div class="hero-strings">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="hero-badge">🎸 Open Source & Free Forever</div>
+  <h1>Master the Blues</h1>
+  <p>Your complete interactive guide to blues guitar — scales, chords, techniques, riffs, and everything between. Built for every level.</p>
+  <a href="#scales" class="cta-btn">Start Learning ↓</a>
+</header>
+
+<!-- ===== SCALES ===== -->
+<section id="scales">
+<div class="section-inner">
+  <div class="section-title fade-in">
+    <h2>Blues <span>Scales</span></h2>
+    <p>The foundation of every blues solo. Learn the essential scales and their positions on the fretboard.</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- Minor Pentatonic -->
+  <div class="accordion fade-in">
+    <div class="accordion-item open">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>🎵 Minor Pentatonic Scale (A Minor)</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p style="color:var(--text2);margin-bottom:1rem">The most important scale in blues. Five notes that create the classic blues sound. Learn all 5 positions across the neck.</p>
+        <div class="diagram-wrap">
+          <!-- Position 1 -->
+          <div class="diagram-box">
+            <h4>Position 1 (5th fret)</h4>
+            <svg width="160" height="220" viewBox="0 0 160 220">
+              <line x1="20" y1="10" x2="20" y2="210" stroke="#334155" stroke-width="1"/>
+              <line x1="50" y1="10" x2="50" y2="210" stroke="#334155" stroke-width="1"/>
+              <line x1="80" y1="10" x2="80" y2="210" stroke="#334155" stroke-width="1.5"/>
+              <line x1="110" y1="10" x2="110" y2="210" stroke="#334155" stroke-width="2"/>
+              <line x1="140" y1="10" x2="140" y2="210" stroke="#334155" stroke-width="2.5"/>
+              <line x1="10" y1="40" x2="150" y2="40" stroke="#334155" stroke-width=".5"/>
+              <line x1="10" y1="72" x2="150" y2="72" stroke="#334155" stroke-width=".5"/>
+              <line x1="10" y1="104" x2="150" y2="104" stroke="#334155" stroke-width=".5"/>
+              <line x1="10" y1="136" x2="150" y2="136" stroke="#334155" stroke-width=".5"/>
+              <line x1="10" y1="168" x2="150" y2="168" stroke="#334155" stroke-width=".5"/>
+              <line x1="10" y1="200" x2="150" y2="200" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="8" fill="#64748b" font-size="8" text-anchor="middle">e</text>
+              <text x="50" y="8" fill="#64748b" font-size="8" text-anchor="middle">B</text>
+              <text x="80" y="8" fill="#64748b" font-size="8" text-anchor="middle">G</text>
+              <text x="110" y="8" fill="#64748b" font-size="8" text-anchor="middle">D</text>
+              <text x="140" y="8" fill="#64748b" font-size="8" text-anchor="middle">A</text>
+              <text x="140" y="218" fill="#64748b" font-size="8" text-anchor="middle">E</text>
+              <text x="5" y="43" fill="#64748b" font-size="7">5</text>
+              <text x="5" y="75" fill="#64748b" font-size="7">6</text>
+              <text x="5" y="107" fill="#64748b" font-size="7">7</text>
+              <text x="5" y="139" fill="#64748b" font-size="7">8</text>
+              <text x="5" y="171" fill="#64748b" font-size="7">9</text>
+              <text x="5" y="203" fill="#64748b" font-size="7">10</text>
+              <!-- Notes -->
+              <circle cx="80" cy="52" r="8" fill="#f59e0b"/><text x="80" y="55" fill="#000" font-size="7" text-anchor="middle" font-weight="700">A</text>
+              <circle cx="110" cy="52" r="8" fill="#f59e0b"/><text x="110" y="55" fill="#000" font-size="7" text-anchor="middle" font-weight="700">C</text>
+              <circle cx="140" cy="52" r="8" fill="#f59e0b"/><text x="140" y="55" fill="#000" font-size="7" text-anchor="middle" font-weight="700">E</text>
+              <circle cx="20" cy="74" r="8" fill="#f59e0b"/><text x="20" y="77" fill="#000" font-size="7" text-anchor="middle" font-weight="700">C</text>
+              <circle cx="50" cy="74" r="8" fill="#f59e0b"/><text x="50" y="77" fill="#000" font-size="7" text-anchor="middle" font-weight="700">D</text>
+              <circle cx="50" cy="116" r="8" fill="#f59e0b"/><text x="50" y="119" fill="#000" font-size="7" text-anchor="middle" font-weight="700">F</text>
+              <circle cx="80" cy="104" r="8" fill="#f59e0b"/><text x="80" y="107" fill="#000" font-size="7" text-anchor="middle" font-weight="700">G</text>
+              <circle cx="110" cy="104" r="8" fill="#f59e0b"/><text x="110" y="107" fill="#000" font-size="7" text-anchor="middle" font-weight="700">A</text>
+              <circle cx="140" cy="104" r="8" fill="#f59e0b"/><text x="140" y="107" fill="#000" font-size="7" text-anchor="middle" font-weight="700">C</text>
+              <circle cx="80" cy="148" r="8" fill="#f59e0b"/><text x="80" y="151" fill="#000" font-size="7" text-anchor="middle" font-weight="700">D</text>
+              <circle cx="110" cy="148" r="8" fill="#f59e0b"/><text x="110" y="151" fill="#000" font-size="7" text-anchor="middle" font-weight="700">E</text>
+              <circle cx="140" cy="148" r="8" fill="#f59e0b"/><text x="140" y="151" fill="#000" font-size="7" text-anchor="middle" font-weight="700">G</text>
+              <!-- Root indicator -->
+              <circle cx="80" cy="52" r="12" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+              <circle cx="110" cy="104" r="12" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+            </svg>
+            <div class="note-label">Root = A (orange circles)</div>
+          </div>
+          <!-- Position 2 -->
+          <div class="diagram-box">
+            <h4>Position 2 (8th fret)</h4>
+            <svg width="160" height="220" viewBox="0 0 160 220">
+              <line x1="20" y1="10" x2="20" y2="210" stroke="#334155" stroke-width="1"/>
+              <line x1="50" y1="10" x2="50" y2="210" stroke="#334155" stroke-width="1"/>
+              <line x1="80" y1="10" x2="80" y2="210" stroke="#334155" stroke-width="1.5"/>
+              <line x1="110" y1="10" x2="110" y2="210" stroke="#334155" stroke-width="2"/>
+              <line x1="140" y1="10" x2="140" y2="210" stroke="#334155" stroke-width="2.5"/>
+              <line x1="10" y1="40" x2="150" y2="40" stroke="#334155" stroke-width=".5"/>
+              <line x1="10" y1="72" x2="150" y2="72" stroke="#334155" stroke-width=".5"/>
+              <line x1="10" y1="104" x2="150" y2="104" stroke="#334155" stroke-width=".5"/>
+              <line x1="10" y1="136" x2="150" y2="136" stroke="#334155" stroke-width=".5"/>
+              <line x1="10" y1="168" x2="150" y2="168" stroke="#334155" stroke-width=".5"/>
+              <line x1="10" y1="200" x2="150" y2="200" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="8" fill="#64748b" font-size="8" text-anchor="middle">e</text>
+              <text x="50" y="8" fill="#64748b" font-size="8" text-anchor="middle">B</text>
+              <text x="80" y="8" fill="#64748b" font-size="8" text-anchor="middle">G</text>
+              <text x="110" y="8" fill="#64748b" font-size="8" text-anchor="middle">D</text>
+              <text x="140" y="8" fill="#64748b" font-size="8" text-anchor="middle">A</text>
+              <text x="5" y="43" fill="#64748b" font-size="7">8</text>
+              <text x="5" y="75" fill="#64748b" font-size="7">9</text>
+              <text x="5" y="107" fill="#64748b" font-size="7">10</text>
+              <text x="5" y="139" fill="#64748b" font-size="7">11</text>
+              <text x="5" y="171" fill="#64748b" font-size="7">12</text>
+              <text x="5" y="203" fill="#64748b" font-size="7">13</text>
+              <circle cx="20" cy="52" r="8" fill="#f59e0b"/><text x="20" y="55" fill="#000" font-size="7" text-anchor="middle" font-weight="700">A</text>
+              <circle cx="50" cy="52" r="8" fill="#f59e0b"/><text x="50" y="55" fill="#000" font-size="7" text-anchor="middle" font-weight="700">C</text>
+              <circle cx="80" cy="52" r="8" fill="#f59e0b"/><text x="80" y="55" fill="#000" font-size="7" text-anchor="middle" font-weight="700">E</text>
+              <circle cx="50" cy="84" r="8" fill="#f59e0b"/><text x="50" y="87" fill="#000" font-size="7" text-anchor="middle" font-weight="700">F</text>
+              <circle cx="80" cy="72" r="8" fill="#f59e0b"/><text x="80" y="75" fill="#000" font-size="7" text-anchor="middle" font-weight="700">G</text>
+              <circle cx="110" cy="72" r="8" fill="#f59e0b"/><text x="110" y="75" fill="#000" font-size="7" text-anchor="middle" font-weight="700">A</text>
+              <circle cx="140" cy="72" r="8" fill="#f59e0b"/><text x="140" y="75" fill="#000" font-size="7" text-anchor="middle" font-weight="700">C</text>
+              <circle cx="110" cy="116" r="8" fill="#f59e0b"/><text x="110" y="119" fill="#000" font-size="7" text-anchor="middle" font-weight="700">D</text>
+              <circle cx="140" cy="116" r="8" fill="#f59e0b"/><text x="140" y="119" fill="#000" font-size="7" text-anchor="middle" font-weight="700">E</text>
+              <circle cx="20" cy="148" r="8" fill="#f59e0b"/><text x="20" y="151" fill="#000" font-size="7" text-anchor="middle" font-weight="700">G</text>
+              <circle cx="50" cy="148" r="8" fill="#f59e0b"/><text x="50" y="151" fill="#000" font-size="7" text-anchor="middle" font-weight="700">A</text>
+              <circle cx="20" cy="180" r="8" fill="#f59e0b"/><text x="20" y="183" fill="#000" font-size="7" text-anchor="middle" font-weight="700">C</text>
+              <circle cx="80" cy="148" r="12" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+              <circle cx="110" cy="72" r="12" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+            </svg>
+            <div class="note-label">Connects to Position 1</div>
+          </div>
+        </div>
+        <div class="tab">
+<span class="comment">A Minor Pentatonic - Notes: A B D E G</span>
+e|---8---10---8---|
+B|---8---10-------|
+G|---8---10---8---|
+D|---8---10-------|
+A|---8---------8--|
+E|---5---7---5----|
+        </div>
+        <div style="margin-top:1rem">
+          <span class="badge badge-green">Essential</span>
+          <span class="badge badge-blue">5 Positions</span>
+          <span class="badge badge-amber">Start Here</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blues Scale -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>🔥 Blues Scale (A Blues)</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p style="color:var(--text2);margin-bottom:1rem">The minor pentatonic plus the <strong>"blue note"</strong> (b5 / Eb). This one note adds that gritty, soulful blues character.</p>
+        <div class="tab">
+<span class="comment">A Blues Scale - Notes: A C D Eb E G</span>
+e|---8---10---8---|
+B|---8---10-------|
+G|---8---10---8---|
+D|---6---8---6----|  <span class="highlight">Eb = blue note!</span>
+A|---8---------8--|
+E|---5---7---5----|
+        </div>
+        <div style="margin-top:1rem">
+          <span class="badge badge-amber">The "Blue Note" = Eb (b5)</span>
+          <span class="badge badge-green">Core Sound</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Major Pentatonic -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>☀️ Major Pentatonic Scale (A Major)</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p style="color:var(--text2);margin-bottom:1rem">Bright, happy sound — used in country-blues and upbeat blues. Think Stevie Ray Vaughan or Buddy Guy.</p>
+        <div class="tab">
+<span class="comment">A Major Pentatonic - Notes: A B C# D# E</span>
+e|-----------------|
+B|---0---2---0-----|
+G|---0---2---0-----|
+D|---0-------2-----|
+A|---2---2---0-----|
+E|---0-------0-----|
+        </div>
+        <div style="margin-top:1rem">
+          <span class="badge badge-blue">Bright Sound</span>
+          <span class="badge badge-amber">Country Blues</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mixolydian -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>🎷 Mixolydian Mode (A Mixolydian)</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p style="color:var(--text2);margin-bottom:1rem">The "dominant" scale — perfect for soloing over dominant 7th chords. This is the sound of classic blues.</p>
+        <div class="tab">
+<span class="comment">A Mixolydian - Notes: A B C# D E F# G</span>
+e|---5---7---8---5---|
+B|---5---7---7-------|
+G|---5---7---6---5---|
+D|---6---7-----------|
+A|---7-------7---7---|
+E|---5-------5---5---|
+        </div>
+        <div style="margin-top:1rem">
+          <span class="badge badge-amber">Classic Blues Sound</span>
+          <span class="badge badge-blue">Dominant 7th Friendly</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scale Comparison -->
+  <div class="grid-3 fade-in" style="margin-top:2rem">
+    <div class="card">
+      <h3>🎯 When to Use What</h3>
+      <table class="info-table">
+        <tr><th>Scale</th><th>Use For</th></tr>
+        <tr><td>Minor Pentatonic</td><td>Everything blues</td></tr>
+        <tr><td>Blues Scale</td><td>Gritty, soulful solos</td></tr>
+        <tr><td>Major Pentatonic</td><td>Bright, happy blues</td></tr>
+        <tr><td>Mixolydian</td><td>Dominant 7th chords</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>📐 Scale Formulas</h3>
+      <table class="info-table">
+        <tr><th>Scale</th><th>Intervals</th></tr>
+        <tr><td>Minor Pentatonic</td><td>1 b3 4 5 b7</td></tr>
+        <tr><td>Blues Scale</td><td>1 b3 4 b5 5 b7</td></tr>
+        <tr><td>Major Pentatonic</td><td>1 2 3 5 6</td></tr>
+        <tr><td>Mixolydian</td><td>1 2 3 4 5 6 b7</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>💡 Pro Tip</h3>
+      <p>Mix minor and major pentatonic in the same solo for maximum blues expression. Start with minor, then "borrow" notes from major for colorful moments. This is what B.B. King did!</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== CHORDS ===== -->
+<section id="chords" style="background:var(--bg2)">
+<div class="section-inner">
+  <div class="section-title fade-in">
+    <h2>Blues <span>Chords</span></h2>
+    <p>Blues is built on dominant 7th chords and the I-IV-V progression. Master these shapes and you can play any blues.</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- I-IV-V Explanation -->
+  <div class="card fade-in" style="margin-bottom:2rem">
+    <h3>🏗️ The I-IV-V Progression</h3>
+    <p>The backbone of every 12-bar blues. In the key of A:</p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;justify-content:center">
+      <div style="text-align:center;padding:1rem;background:var(--bg3);border-radius:8px;min-width:100px">
+        <div style="font-size:1.5rem;font-weight:800;color:var(--accent)">I</div>
+        <div style="font-size:1.2rem;font-weight:700">A7</div>
+        <div style="font-size:.8rem;color:var(--text3)">Tonic — Home</div>
+      </div>
+      <div style="text-align:center;padding:1rem;background:var(--bg3);border-radius:8px;min-width:100px">
+        <div style="font-size:1.5rem;font-weight:800;color:var(--blue)">IV</div>
+        <div style="font-size:1.2rem;font-weight:700">D7</div>
+        <div style="font-size:.8rem;color:var(--text3)">Subdominant — Movement</div>
+      </div>
+      <div style="text-align:center;padding:1rem;background:var(--bg3);border-radius:8px;min-width:100px">
+        <div style="font-size:1.5rem;font-weight:800;color:var(--red)">V</div>
+        <div style="font-size:1.2rem;font-weight:700">E7</div>
+        <div style="font-size:.8rem;color:var(--text3)">Dominant — Tension</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chord Diagrams -->
+  <div class="diagram-wrap fade-in">
+    <!-- A7 -->
+    <div class="diagram-box">
+      <h4>A7 (I Chord)</h4>
+      <svg width="140" height="200" viewBox="0 0 140 200">
+        <rect x="5" y="5" width="25" height="25" rx="4" fill="var(--bg4)"/>
+        <text x="17" y="21" fill="#ef4444" font-size="10" text-anchor="middle" font-weight="700">X</text>
+        <line x1="35" y1="30" x2="35" y2="190" stroke="#334155" stroke-width="1.5"/>
+        <line x1="65" y1="30" x2="65" y2="190" stroke="#334155" stroke-width="1.5"/>
+        <line x1="95" y1="30" x2="95" y2="190" stroke="#334155" stroke-width="2"/>
+        <line x1="125" y1="30" x2="125" y2="190" stroke="#334155" stroke-width="2.5"/>
+        <line x1="30" y1="60" x2="130" y2="60" stroke="#334155" stroke-width=".5"/>
+        <line x1="30" y1="90" x2="130" y2="90" stroke="#334155" stroke-width=".5"/>
+        <line x1="30" y1="120" x2="130" y2="120" stroke="#334155" stroke-width=".5"/>
+        <line x1="30" y1="150" x2="130" y2="150" stroke="#334155" stroke-width=".5"/>
+        <line x1="30" y1="180" x2="130" y2="180" stroke="#334155" stroke-width="1"/>
+        <text x="35" y="24" fill="#64748b" font-size="8" text-anchor="middle">e</text>
+        <text x="65" y="24" fill="#64748b" font-size="8" text-anchor="middle">B</text>
+        <text x="95" y="24" fill="#64748b" font-size="8" text-anchor="middle">G</text>
+        <text x="125" y="24" fill="#64748b" font-size="8" text-anchor="middle">D</text>
+        <text x="125" y="198" fill="#64748b" font-size="8" text-anchor="middle">A</text>
+        <circle cx="65" cy="45" r="7" fill="#f59e0b"/>
+        <circle cx="95" cy="45" r="7" fill="#f59e0b"/>
+        <circle cx="125" cy="75" r="7" fill="#f59e0b"/>
+        <circle cx="95" cy="105" r="7" fill="#f59e0b"/>
+      </svg>
+      <div class="note-label">Open A7</div>
+    </div>
+
+    <!-- D7 -->
+    <div class="diagram-box">
+      <h4>D7 (IV Chord)</h4>
+      <svg width="140" height="200" viewBox="0 0 140 200">
+        <rect x="5" y="5" width="25" height="25" rx="4" fill="var(--bg4)"/>
+        <text x="17" y="21" fill="#64748b" font-size="10" text-anchor="middle">O</text>
+        <line x1="35" y1="30" x2="35" y2="190" stroke="#334155" stroke-width="1.5"/>
+        <line x1="65" y1="30" x2="65" y2="190" stroke="#334155" stroke-width="1.5"/>
+        <line x1="95" y1="30" x2="95" y2="190" stroke="#334155" stroke-width="2"/>
+        <line x1="125" y1="30" x2="125" y2="190" stroke="#334155" stroke-width="2.5"/>
+        <line x1="30" y1="60" x2="130" y2="60" stroke="#334155" stroke-width=".5"/>
+        <line x1="30" y1="90" x2="130" y2="90" stroke="#334155" stroke-width=".5"/>
+        <line x1="30" y1="120" x2="130" y2="120" stroke="#334155" stroke-width=".5"/>
+        <line x1="30" y1="150" x2="130" y2="150" stroke="#334155" stroke-width=".5"/>
+        <line x1="30" y1="180" x2="130" y2="180" stroke="#334155" stroke-width="1"/>
+        <text x="35" y="24" fill="#64748b" font-size="8" text-anchor="middle">e</text>
+        <text x="65" y="24" fill="#64748b" font-size="8" text-anchor="middle">B</text>
+        <text x="95" y="24" fill="#64748b" font-size="8" text-anchor="middle">G</text>
+        <text x="125" y="24" fill="#64748b" font-size="8" text-anchor="middle">D</text>
+        <circle cx="35" cy="45" r="7" fill="#f59e0b"/>
+        <circle cx="65" cy="45" r="7" fill="#f59e0b"/>
+        <circle cx="95" cy="75" r="7" fill="#f59e0b"/>
+        <circle cx="125" cy="60" r="7" fill="#f59e0b"/>
+      </svg>
+      <div class="note-label">Open D7</div>
+    </div>
+
+    <!-- E7 -->
+    <div class="diagram-box">
+      <h4>E7 (V Chord)</h4>
+      <svg width="140" height="200" viewBox="0 0 140 200">
+        <line x1="20" y1="10" x2="20" y2="190" stroke="#334155" stroke-width="1"/>
+        <line x1="50" y1="10" x2="50" y2="190" stroke="#334155" stroke-width="1"/>
+        <line x1="80" y1="10" x2="80" y2="190" stroke="#334155" stroke-width="1.5"/>
+        <line x1="110" y1="10" x2="110" y2="190" stroke="#334155" stroke-width="2"/>
+        <line x1="140" y1="10" x2="140" y2="190" stroke="#334155" stroke-width="2.5"/>
+        <line x1="10" y1="40" x2="150" y2="40" stroke="#334155" stroke-width=".5"/>
+        <line x1="10" y1="70" x2="150" y2="70" stroke="#334155" stroke-width=".5"/>
+        <line x1="10" y1="100" x2="150" y2="100" stroke="#334155" stroke-width=".5"/>
+        <line x1="10" y1="130" x2="150" y2="130" stroke="#334155" stroke-width=".5"/>
+        <line x1="10" y1="160" x2="150" y2="160" stroke="#334155" stroke-width=".5"/>
+        <line x1="10" y1="190" x2="150" y2="190" stroke="#334155" stroke-width="1"/>
+        <text x="20" y="8" fill="#64748b" font-size="8" text-anchor="middle">e</text>
+        <text x="50" y="8" fill="#64748b" font-size="8" text-anchor="middle">B</text>
+        <text x="80" y="8" fill="#64748b" font-size="8" text-anchor="middle">G</text>
+        <text x="110" y="8" fill="#64748b" font-size="8" text-anchor="middle">D</text>
+        <text x="140" y="8" fill="#64748b" font-size="8" text-anchor="middle">A</text>
+        <text x="140" y="198" fill="#64748b" font-size="8" text-anchor="middle">E</text>
+        <circle cx="50" cy="25" r="7" fill="#f59e0b"/>
+        <circle cx="80" cy="55" r="7" fill="#f59e0b"/>
+        <circle cx="110" cy="25" r="7" fill="#f59e0b"/>
+        <circle cx="140" cy="25" r="7" fill="#f59e0b"/>
+      </svg>
+      <div class="note-label">Open E7</div>
+    </div>
+
+    <!-- A7 Barre (5th fret) -->
+    <div class="diagram-box">
+      <h4>A7 Barre (5th fret)</h4>
+      <svg width="140" height="200" viewBox="0 0 140 200">
+        <line x1="20" y1="10" x2="20" y2="190" stroke="#334155" stroke-width="1"/>
+        <line x1="50" y1="10" x2="50" y2="190" stroke="#334155" stroke-width="1"/>
+        <line x1="80" y1="10" x2="80" y2="190" stroke="#334155" stroke-width="1.5"/>
+        <line x1="110" y1="10" x2="110" y2="190" stroke="#334155" stroke-width="2"/>
+        <line x1="140" y1="10" x2="140" y2="190" stroke="#334155" stroke-width="2.5"/>
+        <line x1="10" y1="30" x2="150" y2="30" stroke="#334155" stroke-width="2"/>
+        <line x1="10" y1="60" x2="150" y2="60" stroke="#334155" stroke-width=".5"/>
+        <line x1="10" y1="90" x2="150" y2="90" stroke="#334155" stroke-width=".5"/>
+        <line x1="10" y1="120" x2="150" y2="120" stroke="#334155" stroke-width=".5"/>
+        <line x1="10" y1="150" x2="150" y2="150" stroke="#334155" stroke-width=".5"/>
+        <line x1="10" y1="180" x2="150" y2="180" stroke="#334155" stroke-width="1"/>
+        <text x="20" y="8" fill="#64748b" font-size="8" text-anchor="middle">e</text>
+        <text x="50" y="8" fill="#64748b" font-size="8" text-anchor="middle">B</text>
+        <text x="80" y="8" fill="#64748b" font-size="8" text-anchor="middle">G</text>
+        <text x="110" y="8" fill="#64748b" font-size="8" text-anchor="middle">D</text>
+        <text x="140" y="8" fill="#64748b" font-size="8" text-anchor="middle">A</text>
+        <text x="5" y="34" fill="#f59e0b" font-size="8" font-weight="700">5</text>
+        <rect x="15" y="22" width="130" height="16" rx="3" fill="#f59e0b" opacity=".3"/>
+        <circle cx="80" cy="75" r="7" fill="#f59e0b"/>
+        <circle cx="110" cy="75" r="7" fill="#f59e0b"/>
+        <circle cx="140" cy="75" r="7" fill="#f59e0b"/>
+        <circle cx="110" cy="105" r="7" fill="#f59e0b"/>
+      </svg>
+      <div class="note-label">Movable shape</div>
+    </div>
+  </div>
+
+  <!-- 12-Bar Blues Structure -->
+  <div class="card fade-in" style="margin-top:2rem">
+    <h3>📋 The 12-Bar Blues Structure</h3>
+    <p>Every blues song follows this pattern. Here it is in the key of A:</p>
+    <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin-top:1rem">
+      <div style="text-align:center;padding:.5rem;background:rgba(245,158,11,.1);border-radius:6px;border:1px solid var(--accent)">A7</div>
+      <div style="text-align:center;padding:.5rem;background:rgba(245,158,11,.1);border-radius:6px;border:1px solid var(--accent)">A7</div>
+      <div style="text-align:center;padding:.5rem;background:rgba(245,158,11,.1);border-radius:6px;border:1px solid var(--accent)">A7</div>
+      <div style="text-align:center;padding:.5rem;background:rgba(245,158,11,.1);border-radius:6px;border:1px solid var(--accent)">A7</div>
+      <div style="text-align:center;padding:.5rem;background:rgba(59,130,246,.1);border-radius:6px;border:1px solid var(--blue)">D7</div>
+      <div style="text-align:center;padding:.5rem;background:rgba(59,130,246,.1);border-radius:6px;border:1px solid var(--blue)">D7</div>
+      <div style="text-align:center;padding:.5rem;background:rgba(59,130,246,.1);border-radius:6px;border:1px solid var(--blue)">D7</div>
+      <div style="text-align:center;padding:.5rem;background:rgba(59,130,246,.1);border-radius:6px;border:1px solid var(--blue)">D7</div>
+      <div style="text-align:center;padding:.5rem;background:rgba(245,158,11,.1);border-radius:6px;border:1px solid var(--accent)">A7</div>
+      <div style="text-align:center;padding:.5rem;background:rgba(245,158,11,.1);border-radius:6px;border:1px solid var(--accent)">A7</div>
+      <div style="text-align:center;padding:.5rem;background:rgba(239,68,68,.1);border-radius:6px;border:1px solid var(--red)">E7→A7</div>
+      <div style="text-align:center;padding:.5rem;background:rgba(239,68,68,.1);border-radius:6px;border:1px solid var(--red)">E7</div>
+    </div>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem;font-size:.8rem;color:var(--text3)">
+      <span>🟡 I = A7</span><span>🔵 IV = D7</span><span>🔴 V = E7</span>
+    </div>
+  </div>
+
+  <!-- Turnarounds -->
+  <div class="card fade-in" style="margin-top:1.5rem">
+    <h3>🔄 Common Blues Turnarounds</h3>
+    <p>Smooth chord transitions at the end of a 12-bar cycle:</p>
+    <div class="tab">
+<span class="comment">Classic Turnaround (key of A):</span>
+<span class="highlight">| A7 | D7 | A7 | E7 |</span>
+
+<span class="comment">Quick Change (key of A):</span>
+<span class="highlight">| A7 | D7 | A7 | A7 |</span>  <span class="comment">— IV on beat 2!</span>
+
+<span class="comment">Backdoor Turnaround:</span>
+<span class="highlight">| A7 | D7 | Dm7 | E7 |</span>  <span class="comment">— minor iv for color</span>
+        </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== TECHNIQUES ===== -->
+<section id="techniques">
+<div class="section-inner">
+  <div class="section-title fade-in">
+    <h2>Essential <span>Techniques</span></h2>
+    <p>These techniques give blues its voice. Master each one slowly, then combine them for expressive playing.</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="grid-3 fade-in">
+    <!-- Bends -->
+    <div class="tech-card">
+      <div class="tech-icon">↗️</div>
+      <h3>String Bends</h3>
+      <p>Push a string sideways to raise its pitch. The most expressive blues technique.</p>
+      <div style="margin-bottom:.75rem">
+        <span class="difficulty diff-easy">Full Bend</span>
+        <span class="difficulty diff-med">Half Bend</span>
+        <span class="difficulty diff-hard">Quarter Bend</span>
+      </div>
+      <div class="tab" style="font-size:.8rem;padding:1rem">
+<span class="comment">Full bend example (A minor pent):</span>
+e|---8---10pb(10)---8---|
+B|----------------------|
+<span class="comment">pb = push bend to next note</span>
+      </div>
+      <p style="font-size:.8rem;color:var(--text3)">🎯 Tip: Use 2 fingers for strength. Bend on the G or B string for cleaner tone.</p>
+    </div>
+
+    <!-- Slides -->
+    <div class="tech-card">
+      <div class="tech-icon">🏎️</div>
+      <h3>Slides</h3>
+      <p>Glissando between notes — slide your finger along the fretboard without picking again.</p>
+      <div style="margin-bottom:.75rem">
+        <span class="difficulty diff-easy">Fret Slide</span>
+        <span class="difficulty diff-med">String Skip</span>
+        <span class="difficulty diff-hard">Pre-bend</span>
+      </div>
+      <div class="tab" style="font-size:.8rem;padding:1rem">
+<span class="comment">Slide example:</span>
+e|---8---10\12---10---|
+B|--------------------|
+<span class="comment">\ = slide down  / = slide up</span>
+      </div>
+      <p style="font-size:.8rem;color:var(--text3)">🎯 Tip: Keep your finger firm on the string while sliding. Land cleanly on target fret.</p>
+    </div>
+
+    <!-- Vibrato -->
+    <div class="tech-card">
+      <div class="tech-icon">〰️</div>
+      <h3>Vibrato</h3>
+      <p>Rock your hand back and forth on a bent note to create a singing, expressive pitch variation.</p>
+      <div style="margin-bottom:.75rem">
+        <span class="difficulty diff-med">Wide Vibrato</span>
+        <span class="difficulty diff-med">Narrow Vibrato</span>
+      </div>
+      <div class="tab" style="font-size:.8rem;padding:1rem">
+<span class="comment">B.B. King style vibrato:</span>
+e|---8---8~---8-------|
+B|---------------------|
+<span class="comment">~ = vibrato (rock the string)</span>
+      </div>
+      <p style="font-size:.8rem;color:var(--text3)">🎯 Tip: B.B. King said "It don't mean a thing if you can't intone." Vibrato is your signature.</p>
+    </div>
+
+    <!-- Hammer-Ons -->
+    <div class="tech-card">
+      <div class="tech-icon">🔨</div>
+      <h3>Hammer-Ons</h3>
+      <p>Strike a note by "hammering" your finger onto the fretboard — no pick needed for the second note.</p>
+      <div style="margin-bottom:.75rem">
+        <span class="difficulty diff-easy">Basic</span>
+        <span class="difficulty diff-med">Double</span>
+      </div>
+      <div class="tab" style="font-size:.8rem;padding:1rem">
+<span class="comment">Hammer-on example:</span>
+e|---8h10---10h12---10---|
+B|-----------------------|
+<span class="comment">h = hammer-on</span>
+      </div>
+      <p style="font-size:.8rem;color:var(--text3)">🎯 Tip: Hammer from a lower fret. The harder you hammer, the clearer the note.</p>
+    </div>
+
+    <!-- Pull-Offs -->
+    <div class="tech-card">
+      <div class="tech-icon">💨</div>
+      <h3>Pull-Offs</h3>
+      <p>Release a note by pulling your finger off the string, sounding the lower note underneath.</p>
+      <div style="margin-bottom:.75rem">
+        <span class="difficulty diff-easy">Basic</span>
+        <span class="difficulty diff-med">Triple</span>
+      </div>
+      <div class="tab" style="font-size:.8rem;padding:1rem">
+<span class="comment">Pull-off example:</span>
+e|---10p8---8p0---8---|
+B|---------------------|
+<span class="comment">p = pull-off</span>
+      </div>
+      <p style="font-size:.8rem;color:var(--text3)">🎯 Tip: Don't just lift — pull slightly downward to "pluck" the string with your finger.</p>
+    </div>
+
+    <!-- Muting -->
+    <div class="tech-card">
+      <div class="tech-icon">🤫</div>
+      <h3>Palm Muting</h3>
+      <p>Rest your picking hand's palm on the strings near the bridge for a tight, percussive sound.</p>
+      <div style="margin-bottom:.75rem">
+        <span class="difficulty diff-easy">Rhythm</span>
+        <span class="difficulty diff-med">Choke</span>
+      </div>
+      <div class="tab" style="font-size:.8rem;padding:1rem">
+<span class="comment">Palm-muted riff:</span>
+e|---------------------|
+B|---------------------|
+G|---------------------|
+D|---5p0-x---5p0-x----|
+A|---5---x---5---x-----|
+E|---5-------5--------|
+<span class="comment">x = percussive mute</span>
+      </div>
+      <p style="font-size:.8rem;color:var(--text3)">🎯 Tip: Adjust palm position for more or less mute. Closer to bridge = tighter.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== RIFFS ===== -->
+<section id="riffs" style="background:var(--bg2)">
+<div class="section-inner">
+  <div class="section-title fade-in">
+    <h2>Classic Blues <span>Riffs & Licks</span></h2>
+    <p>Learn these iconic riffs to build your blues vocabulary. Practice slowly, then speed up.</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="accordion fade-in">
+    <!-- Riff 1: Classic 12-Bar -->
+    <div class="accordion-item open">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>🎸 Classic 12-Bar Blues Riff (Key of A)</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p style="color:var(--text2);margin-bottom:1rem">The foundational blues riff. Play this over any 12-bar blues backing track.</p>
+        <div class="tab">
+<span class="comment">Bar 1-2: I chord (A7) — call</span>
+e|-----------------|-----------------|
+B|-----------------|-----------------|
+G|---8---8---8p0---|---8---8---8p0---|
+D|---8-------x-----|---8-------x-----|
+A|---8-------------|---8-------------|
+E|---5-------------|---5-------------|
+
+<span class="comment">Bar 3-4: I chord (A7) — response</span>
+e|-----------------|-----------------|
+B|-----------------|-----------------|
+G|---8---8---10---8|---8---8---8p0---|
+D|---8-------------|---8-------x-----|
+A|---8-------------|---8-------------|
+E|---5-------------|---5-------------|
+
+<span class="comment">Bar 5-6: IV chord (D7)</span>
+e|-----------------|-----------------|
+B|-----------------|-----------------|
+G|---5---5---5p0---|---5---5---5p0---|
+D|---5-------x-----|---5-------x-----|
+A|---5-------------|---5-------------|
+E|---3-------------|---3-------------|
+
+<span class="comment">Bar 7-8: IV chord (D7) — variation</span>
+e|-----------------|-----------------|
+B|-----------------|-----------------|
+G|---5---5---7---5-|---5---5---5p0---|
+D|---5-------------|---5-------x-----|
+A|---5-------------|---5-------------|
+E|---3-------------|---3-------------|
+
+<span class="comment">Bar 9-10: I chord (A7)</span>
+e|-----------------|-----------------|
+B|-----------------|-----------------|
+G|---8---8---8p0---|---8---8---8p0---|
+D|---8-------x-----|---8-------x-----|
+A|---8-------------|---8-------------|
+E|---5-------------|---5-------------|
+
+<span class="comment">Bar 11-12: V → I turnaround</span>
+e|-----------------|-----------------|
+B|-----------------|-----------------|
+G|---8---8---8p0---|---8---8---8p0---|
+D|---8-------x-----|---8-------x-----|
+A|---8-------------|---8-------------|
+E|---5-------------|---5-------------|
+        </div>
+        <span class="difficulty diff-easy" style="margin-top:.5rem;display:inline-block">Beginner Friendly</span>
+      </div>
+    </div>
+
+    <!-- Riff 2: SRV Style -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>⚡ Stevie Ray Vaughan Style Lick</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p style="color:var(--text2);margin-bottom:1rem">Aggressive bends and double stops — the Texas blues sound.</p>
+        <div class="tab">
+<span class="comment">SRV-style double stop bend:</span>
+e|---10---10b12---10---8---|
+B|---8-----8----8---8---8--|
+G|-------------------------|
+D|-------------------------|
+A|-------------------------|
+E|-------------------------|
+
+<span class="comment">SRV-style chromatic approach:</span>
+e|-------------------------|
+B|-------------------------|
+G|---8---8---9---10---8----|
+D|---8---8---8---8---8-----|
+A|---8---------------------|
+E|---5---------------------|
+        </div>
+        <span class="difficulty diff-med" style="margin-top:.5rem;display:inline-block">Intermediate</span>
+      </div>
+    </div>
+
+    <!-- Riff 3: B.B. King Style -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>👑 B.B. King Style Lick</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p style="color:var(--text2);margin-bottom:1rem">Less notes, more feel. B.B. King's signature: single notes with vibrato and space.</p>
+        <div class="tab">
+<span class="comment">B.B. King style — space & vibrato:</span>
+e|---8~------10~--------|
+B|--------8~--------8~--|
+G|------------8~--------|
+D|----------------------|
+A|----------------------|
+E|----------------------|
+<span class="comment">~ = hold with vibrato, let it sing</span>
+
+<span class="comment">B.B. King chromatic lick:</span>
+e|----------------------|
+B|----------------------|
+G|---8---9---8---7---8--|
+D|---8---8---8---8---8--|
+A|---8------------------|
+E|---5------------------|
+        </div>
+        <span class="difficulty diff-easy" style="margin-top:.5rem;display:inline-block">Beginner Friendly</span>
+      </div>
+    </div>
+
+    <!-- Riff 4: Crossroads -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>🔥 Robert Johnson "Crossroads" Style</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p style="color:var(--text2);margin-bottom:1rem">Delta blues fingerpicking pattern with alternating bass.</p>
+        <div class="tab">
+<span class="comment">Delta blues fingerstyle pattern:</span>
+e|---0---0---0---0---|
+B|---1---1---1---1---|
+G|---0---0---0---0---|
+D|---0---0---0---0---|
+A|---2---2---2---2---|
+E|---0-------0-------|
+
+<span class="comment">With hammer-ons and slides:</span>
+e|-------------------|
+B|-------------------|
+G|---0h2p0---0h2p0--|
+D|---0-----0---0-----|
+A|---2-----2---2-----|
+E|---0-------0------|
+        </div>
+        <span class="difficulty diff-med" style="margin-top:.5rem;display:inline-block">Intermediate</span>
+      </div>
+    </div>
+
+    <!-- Riff 5: Chicago Blues -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>🏙️ Chicago Blues Shuffle Riff</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p style="color:var(--text2);margin-bottom:1rem">The Chicago shuffle — the heartbeat of electric blues. Muddy Waters, Howlin' Wolf, Buddy Guy.</p>
+        <div class="tab">
+<span class="comment">Chicago Shuffle (key of A):</span>
+<span class="comment">Pattern: DA-DA-da DA-DA-da (triplet feel)</span>
+e|---------------------|
+B|---------------------|
+G|---------------------|
+D|---5---5---5---5----|
+A|---5---5---5---5----|
+E|---5-------5-------|
+
+<span class="comment">With rhythm accents:</span>
+e|---------------------|
+B|---------------------|
+G|---------------------|
+D|---5-x-5-x-5-x-5-x--|
+A|---5-x-5-x-5-x-5-x--|
+E|---5-------5-------|
+<span class="comment">x = muted strum (shuffle rhythm)</span>
+        </div>
+        <span class="difficulty diff-easy" style="margin-top:.5rem;display:inline-block">Beginner Friendly</span>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== FRETBOARD ===== -->
+<section id="fretboard">
+<div class="section-inner">
+  <div class="section-title fade-in">
+    <h2>Fretboard <span>Reference</span></h2>
+    <p>Know your fretboard. Here's a complete reference for standard tuning (E A D G B e).</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- Interactive Fretboard -->
+  <div class="card fade-in" style="margin-bottom:2rem;overflow-x:auto">
+    <h3>🗺️ Full Fretboard Map (First 12 Frets)</h3>
+    <p style="color:var(--text2);margin-bottom:1rem">Click any fret to highlight notes. Root notes (A) are shown in gold.</p>
+    <div id="fretboardMap" style="min-width:700px"></div>
+  </div>
+
+  <!-- String Reference -->
+  <div class="grid-2 fade-in">
+    <div class="card">
+      <h3>🎸 Standard Tuning</h3>
+      <table class="info-table">
+        <tr><th>String</th><th>Note</th><th>Frequency</th><th>Gauge</th></tr>
+        <tr><td>1 (thinnest)</td><td><strong>e</strong> (high E)</td><td>329.63 Hz</td><td>.010"</td></tr>
+        <tr><td>2</td><td><strong>B</strong></td><td>246.94 Hz</td><td>.013"</td></tr>
+        <tr><td>3</td><td><strong>G</strong></td><td>196.00 Hz</td><td>.017"</td></tr>
+        <tr><td>4</td><td><strong>D</strong></td><td>146.83 Hz</td><td>.026"</td></tr>
+        <tr><td>5</td><td><strong>A</strong></td><td>110.00 Hz</td><td>.036"</td></tr>
+        <tr><td>6 (thickest)</td><td><strong>E</strong> (low E)</td><td>82.41 Hz</td><td>.046"</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>📍 Key Fret Markers</h3>
+      <table class="info-table">
+        <tr><th>Fret</th><th>Marker</th><th>Note (6th string)</th></tr>
+        <tr><td>3</td><td>●</td><td>G</td></tr>
+        <tr><td>5</td><td>●</td><td><strong style="color:var(--accent)">A</strong> ← blues home!</td></tr>
+        <tr><td>7</td><td>●</td><td>Bb</td></tr>
+        <tr><td>9</td><td>●</td><td>C</td></tr>
+        <tr><td>12</td><td>●●</td><td><strong>E</strong> (octave)</td></tr>
+        <tr><td>15</td><td>●●</td><td>G</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Note Names Quick Reference -->
+  <div class="card fade-in" style="margin-top:1.5rem">
+    <h3>🔤 Note Names on Each String</h3>
+    <div style="overflow-x:auto">
+      <table class="info-table" style="min-width:600px">
+        <tr><th></th><th>Open</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th></tr>
+        <tr><td><strong>e</strong></td><td>e</td><td>F</td><td>F#</td><td>G</td><td>G#</td><td>A</td><td>A#</td><td>B</td><td>C</td><td>C#</td><td>D</td><td>D#</td><td>E</td></tr>
+        <tr><td><strong>B</strong></td><td>B</td><td>C</td><td>C#</td><td>D</td><td>D#</td><td>E</td><td>F</td><td>F#</td><td>G</td><td>G#</td><td>A</td><td>A#</td><td>B</td></tr>
+        <tr><td><strong>G</strong></td><td>G</td><td>G#</td><td>A</td><td>A#</td><td>B</td><td>C</td><td>C#</td><td>D</td><td>D#</td><td>E</td><td>F</td><td>F#</td><td>G</td></tr>
+        <tr><td><strong>D</strong></td><td>D</td><td>D#</td><td>E</td><td>F</td><td>F#</td><td>G</td><td>G#</td><td>A</td><td>A#</td><td>B</td><td>C</td><td>C#</td><td>D</td></tr>
+        <tr><td><strong>A</strong></td><td>A</td><td>A#</td><td>B</td><td>C</td><td>C#</td><td>D</td><td>D#</td><td>E</td><td>F</td><td>F#</td><td>G</td><td>G#</td><td>A</td></tr>
+        <tr><td><strong>E</strong></td><td>E</td><td>F</td><td>F#</td><td>G</td><td>G#</td><td>A</td><td>A#</td><td>B</td><td>C</td><td>C#</td><td>D</td><td>D#</td><td>E</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== PRACTICE ===== -->
+<section id="practice" style="background:var(--bg2)">
+<div class="section-inner">
+  <div class="section-title fade-in">
+    <h2>Practice <span>Guide</span></h2>
+    <p>A structured learning path from beginner to confident blues player.</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- Learning Path -->
+  <div class="fade-in">
+    <div class="progress-section">
+      <h3 style="margin-bottom:1rem">📈 Your Learning Path</h3>
+
+      <div style="margin-bottom:1.5rem">
+        <div style="display:flex;justify-content:space-between;font-size:.9rem">
+          <span>Week 1-2: Open chords & basic strumming</span>
+          <span style="color:var(--green)">Start here</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--green)"></div></div>
+        <p style="font-size:.85rem;color:var(--text3)">Learn A7, D7, E7 open chords. Strum along to a slow 12-bar blues.</p>
+      </div>
+
+      <div style="margin-bottom:1.5rem">
+        <div style="display:flex;justify-content:space-between;font-size:.9rem">
+          <span>Week 3-4: Minor pentatonic position 1</span>
+          <span style="color:var(--accent)">Next</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--accent)"></div></div>
+        <p style="font-size:.85rem;color:var(--text3)">Learn the A minor pentatonic shape at 5th fret. Play single notes slowly.</p>
+      </div>
+
+      <div style="margin-bottom:1.5rem">
+        <div style="display:flex;justify-content:space-between;font-size:.9rem">
+          <span>Week 5-6: Bends & vibrato</span>
+          <span style="color:var(--text3)">Locked</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--blue)"></div></div>
+        <p style="font-size:.85rem;color:var(--text3)">Add expression with bends and vibrato. Practice intonation.</p>
+      </div>
+
+      <div style="margin-bottom:1.5rem">
+        <div style="display:flex;justify-content:space-between;font-size:.9rem">
+          <span>Week 7-8: All 5 pentatonic positions</span>
+          <span style="color:var(--text3)">Locked</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--purple)"></div></div>
+        <p style="font-size:.85rem;color:var(--text3)">Connect all 5 positions across the neck for full freedom.</p>
+      </div>
+
+      <div style="margin-bottom:1.5rem">
+        <div style="display:flex;justify-content:space-between;font-size:.9rem">
+          <span>Week 9-12: Licks, riffs & improvisation</span>
+          <span style="color:var(--text3)">Locked</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--red)"></div></div>
+        <p style="font-size:.85rem;color:var(--text3)">Combine everything into your own blues solos.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Practice Tips -->
+  <div class="grid-3 fade-in" style="margin-top:2rem">
+    <div class="card">
+      <h3>⏱️ Daily Practice Routine</h3>
+      <table class="info-table">
+        <tr><th>Time</th><th>Activity</th></tr>
+        <tr><td>5 min</td><td>Warm-up: chromatic exercise</td></tr>
+        <tr><td>10 min</td><td>Scale practice (pentatonic)</td></tr>
+        <tr><td>10 min</td><td>Chord changes & rhythm</td></tr>
+        <tr><td>10 min</td><td>Technique focus (bends etc.)</td></tr>
+        <tr><td>10 min</td><td>Learn a lick or riff</td></tr>
+        <tr><td>5 min</td><td>Free improvisation</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>🎯 Essential Tips</h3>
+      <ul style="color:var(--text2);font-size:.9rem;padding-left:1.2rem;display:grid;gap:.5rem">
+        <li>Always use a <strong>metronome</strong> — start at 60 BPM</li>
+        <li>Practice <strong>slowly</strong> — speed comes with time</li>
+        <li>Record yourself to hear <strong>intonation issues</strong></li>
+        <li>Play along with <strong>backing tracks</strong> on YouTube</li>
+        <li>Learn by <strong>ear</strong>, not just tabs</li>
+        <li>Keep a <strong>practice journal</strong></li>
+        <li>Rest your hands — avoid <strong>overuse injury</strong></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🎵 Must-Know Blues Songs</h3>
+      <ul style="color:var(--text2);font-size:.9rem;padding-left:1.2rem;display:grid;gap:.5rem">
+        <li><strong>"Sweet Home Chicago"</strong> — Robert Johnson</li>
+        <li><strong>"The Thrill Is Gone"</strong> — B.B. King</li>
+        <li><strong>"Crossroads"</strong> — Cream / Robert Johnson</li>
+        <li><strong>"Pride and Joy"</strong> — Stevie Ray Vaughan</li>
+        <li><strong>"Hoochie Coochie Man"</strong> — Muddy Waters</li>
+        <li><strong>"I'm a Man"</strong> — Howlin' Wolf</li>
+        <li><strong>"Boom Boom"</strong> — John Lee Hooker</li>
+        <li><strong>"Worried Life Blues"</strong> — Robert Johnson</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Gear Recommendations -->
+  <div class="card fade-in" style="margin-top:2rem">
+    <h3>🎛️ Recommended Gear for Blues</h3>
+    <div class="grid-3" style="margin-top:1rem">
+      <div>
+        <h4 style="font-size:.95rem;margin-bottom:.5rem;color:var(--text)">🎸 Guitar</h4>
+        <p style="font-size:.85rem;color:var(--text3)">Fender Stratocaster, Telecaster, or Gibson ES-335. Any electric guitar works — start with what you have!</p>
+      </div>
+      <div>
+        <h4 style="font-size:.95rem;margin-bottom:.5rem;color:var(--text)">🔊 Amp</h4>
+        <p style="font-size:.85rem;color:var(--text3)">Tube amp for warmth (Fender Deluxe, Vox AC30). Solid-state or modeling amps work great for practice.</p>
+      </div>
+      <div>
+        <h4 style="font-size:.95rem;margin-bottom:.5rem;color:var(--text)">🎛️ Effects</h4>
+        <p style="font-size:.85rem;color:var(--text3)">Overdrive (Tube Screamer), Wah pedal, Compressor. Keep it simple — tone is in your hands!</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p style="margin-bottom:.5rem">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--accent)" stroke-width="2" style="vertical-align:middle"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    <strong style="color:var(--accent)">BluesGuitar</strong> — Free & Open Source Blues Learning
+  </p>
+  <p>Built with ❤️ for the blues community. <a href="https://github.com" target="_blank">Star on GitHub</a></p>
+  <p style="margin-top:.5rem;font-size:.75rem">© 2025 BluesGuitar. MIT License.</p>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// Nav scroll effect
+const nav = document.getElementById('topNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Accordion
+function toggleAccordion(header) {
+  const item = header.parentElement;
+  const wasOpen = item.classList.contains('open');
+  // Close all in same accordion
+  item.parentElement.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+// Fade-in on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ===== INTERACTIVE FRETBOARD =====
+(function buildFretboard() {
+  const container = document.getElementById('fretboardMap');
+  const strings = ['e','B','G','D','A','E'];
+  const notes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const rootNote = 'A';
+  const stringRoots = [4, 11, 7, 2, 9, 4]; // C major scale degree for each open string
+  const numFrets = 12;
+  const fretWidth = 52;
+  const stringSpacing = 28;
+  const paddingTop = 30;
+  const paddingLeft = 40;
+  const totalWidth = paddingLeft + numFrets * fretWidth + 10;
+  const totalHeight = paddingTop + 6 * stringSpacing + 10;
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('width', totalWidth);
+  svg.setAttribute('height', totalHeight);
+  svg.setAttribute('viewBox', `0 0 ${totalWidth} ${totalHeight}`);
+  svg.style.background = 'var(--bg3)';
+  svg.style.borderRadius = '12px';
+  svg.style.cursor = 'pointer';
+
+  // Fret lines
+  for (let f = 0; f <= numFrets; f++) {
+    const x = paddingLeft + f * fretWidth;
+    const line = document.createElementNS(svgNS, 'line');
+    line.setAttribute('x1', x);
+    line.setAttribute('y1', paddingTop);
+    line.setAttribute('x2', x);
+    line.setAttribute('y2', paddingTop + 6 * stringSpacing);
+    line.setAttribute('stroke', f === 0 ? '#f59e0b' : '#475569');
+    line.setAttribute('stroke-width', f === 0 ? 3 : f === 12 ? 3 : 1);
+    svg.appendChild(line);
+  }
+
+  // Fret numbers
+  for (let f = 1; f <= numFrets; f++) {
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', paddingLeft + f * fretWidth - fretWidth / 2);
+    text.setAttribute('y', paddingTop + 6 * stringSpacing + 18);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('fill', '#64748b');
+    text.setAttribute('font-size', '10');
+    text.textContent = f;
+    svg.appendChild(text);
+  }
+
+  // String labels
+  strings.forEach((s, i) => {
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', paddingLeft - 12);
+    text.setAttribute('y', paddingTop + i * stringSpacing + stringSpacing / 2 + 4);
+    text.setAttribute('text-anchor', 'end');
+    text.setAttribute('fill', '#94a3b8');
+    text.setAttribute('font-size', '11');
+    text.setAttribute('font-weight', '700');
+    text.textContent = s;
+    svg.appendChild(text);
+  });
+
+  // Note circles
+  const noteCircles = [];
+  strings.forEach((_, si) => {
+    for (let f = 0; f <= numFrets; f++) {
+      const noteIndex = (stringRoots[si] + f) % 12;
+      const noteName = notes[noteIndex];
+      const isRoot = noteName === rootNote;
+      const cx = paddingLeft + f * fretWidth - fretWidth / 2;
+      const cy = paddingTop + si * stringSpacing + stringSpacing / 2;
+
+      // Background circle (invisible hit area)
+      const hitArea = document.createElementNS(svgNS, 'circle');
+      hitArea.setAttribute('cx', cx);
+      hitArea.setAttribute('cy', cy);
+      hitArea.setAttribute('r', 12);
+      hitArea.setAttribute('fill', 'transparent');
+      hitArea.setAttribute('class', 'fret-hit');
+      hitArea.dataset.note = noteName;
+      hitArea.dataset.fret = f;
+      hitArea.dataset.string = si + 1;
+      svg.appendChild(hitArea);
+
+      // Visible note circle
+      const circle = document.createElementNS(svgNS, 'circle');
+      circle.setAttribute('cx', cx);
+      circle.setAttribute('cy', cy);
+      circle.setAttribute('r', isRoot ? 9 : 7);
+      circle.setAttribute('fill', isRoot ? '#f59e0b' : '#3b82f6');
+      circle.setAttribute('opacity', '0.7');
+      circle.setAttribute('class', 'note-circle');
+      circle.dataset.note = noteName;
+      svg.appendChild(circle);
+
+      // Note text
+      const text = document.createElementNS(svgNS, 'text');
+      text.setAttribute('x', cx);
+      text.setAttribute('y', cy + (isRoot ? 4 : 3.5));
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('fill', isRoot ? '#000' : '#fff');
+      text.setAttribute('font-size', isRoot ? '8' : '7');
+      text.setAttribute('font-weight', isRoot ? '800' : '600');
+      text.textContent = noteName;
+      text.setAttribute('pointer-events', 'none');
+      svg.appendChild(text);
+
+      noteCircles.push({ circle, hitArea, note: noteName, fret: f, string: si });
+    }
+  });
+
+  // Hover / click interaction
+  let selectedNote = null;
+  noteCircles.forEach(({ hitArea, circle, note }) => {
+    hitArea.addEventListener('mouseenter', () => {
+      circle.setAttribute('r', note === rootNote ? 11 : 9);
+      circle.setAttribute('opacity', '1');
+    });
+    hitArea.addEventListener('mouseleave', () => {
+      if (selectedNote !== note) {
+        circle.setAttribute('r', note === rootNote ? 9 : 7);
+        circle.setAttribute('opacity', '0.7');
+      }
+    });
+    hitArea.addEventListener('click', () => {
+      selectedNote = note;
+      noteCircles.forEach(nc => {
+        if (nc.note === note) {
+          nc.circle.setAttribute('opacity', '1');
+          nc.circle.setAttribute('stroke', '#fbbf24');
+          nc.circle.setAttribute('stroke-width', '2');
+        } else {
+          nc.circle.setAttribute('opacity', '0.2');
+          nc.circle.removeAttribute('stroke');
+        }
+      });
+    });
+  });
+
+  container.appendChild(svg);
+})();
+
+// Active nav link on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 100;
+    if (window.scrollY >= sectionTop) {
+      current = section.getAttribute('id');
+    }
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
+});
+
+// Close mobile menu on link click
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.nav-links').classList.remove('show');
+  });
+});
+</script>
+</body>
+</html>
