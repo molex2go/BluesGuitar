@@ -1,5 +1,7 @@
 # 🎸 BluesGuitar
 
+[![🚀 Launch BluesGuitar App](https://img.shields.io/badge/%F0%9F%9A%B8%20Launch%20App-Play%20Now-brightgreen?style=for-the-badge&logo=html5&logoColor=white)](https://raw.githubusercontent.com/molex2go/BluesGuitar/main/index.html)
+
 > **The Ultimate Open-Source Blues Guitar Learning App**
 
 A beautiful, interactive single-page application for learning blues guitar — scales, chords, riffs, techniques, and everything you need to sound authentic.
